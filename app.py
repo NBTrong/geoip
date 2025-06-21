@@ -17,6 +17,29 @@ REFRESH_INTERVAL = 24 * 60 * 60  # 1 day
 
 app = Flask(__name__)
 
+def get_client_ip():
+    """Get the real client IP address from request headers"""
+    # Check X-Forwarded-For header (most common for proxies/load balancers)
+    if request.headers.get('X-Forwarded-For'):
+        # X-Forwarded-For can contain multiple IPs, take the first one (original client)
+        ip = request.headers.get('X-Forwarded-For').split(',')[0].strip()
+        return ip
+    
+    # Check X-Real-IP header (used by some proxies)
+    if request.headers.get('X-Real-IP'):
+        return request.headers.get('X-Real-IP').strip()
+    
+    # Check CF-Connecting-IP header (Cloudflare)
+    if request.headers.get('CF-Connecting-IP'):
+        return request.headers.get('CF-Connecting-IP').strip()
+    
+    # Check X-Originating-IP header (some corporate proxies)
+    if request.headers.get('X-Originating-IP'):
+        return request.headers.get('X-Originating-IP').strip()
+    
+    # Fallback to direct connection IP
+    return request.remote_addr
+
 def local_ip_lookup(ip):
     with geoip2.database.Reader('GeoLite2-City.mmdb') as reader:
         response = reader.city(ip)
@@ -27,32 +50,38 @@ def local_ip_lookup(ip):
             "longitude": response.location.longitude
         }
 
-@app.route('/lookup/<ip>')
-def lookup_ip(ip):
-    """Lookup IP address information"""
+@app.route('/lookup')
+def lookup_ip():
+    """Lookup IP address information - uses client IP if no IP parameter provided"""
     try:
         start_time = time.time()
+        
+        ip = get_client_ip()
         result = local_ip_lookup(ip)
         end_time = time.time()
         
         result["lookup_time_ms"] = round((end_time - start_time) * 1000, 2)
-        result["ip"] = ip
+        result["client_ip"] = ip
         
         return jsonify({
             "success": True,
-            "data": result
+            "result": result
         })
     
     except geoip2.errors.AddressNotFoundError:
         return jsonify({
             "success": False,
-            "error": "IP address not found in database"
+            "error": "IP address not found in database",
+            "ip": ip,
+            "client_ip": get_client_ip()
         }), 404
     
     except Exception as e:
         return jsonify({
             "success": False,
-            "error": str(e)
+            "error": str(e),
+            "ip": ip,
+            "client_ip": get_client_ip()
         }), 500
 
 # ---------------------------

@@ -1,6 +1,7 @@
 import geoip2.database
 import time
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 import geoip2.errors
 import os
 import threading
@@ -16,6 +17,7 @@ DB_FILE = "GeoLite2-City.mmdb"
 REFRESH_INTERVAL = 24 * 60 * 60  # 1 day
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 def get_client_ip():
     """Get the real client IP address from request headers"""

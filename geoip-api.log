@@ -1,7 +1,7 @@
 Testing IP lookup...
 {'city': 'Hanoi', 'country': 'Vietnam', 'latitude': 21.0184, 'longitude': 105.8461}
-Lookup took: 1.94 ms
-[2025-06-21T04:28:38.861990] Downloading latest GeoLite2 database...
+Lookup took: 0.43 ms
+[2025-06-21T04:54:17.423422] Downloading latest GeoLite2 database...
 Started GeoLite2 auto-update thread.
 
 Starting Flask API server...
@@ -15,16 +15,33 @@ Starting Flask API server...
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 314-045-702
-127.0.0.1 - - [21/Jun/2025 11:28:45] "GET /lookup/116.96.47.227 HTTP/1.1" 200 -
+127.0.0.1 - - [21/Jun/2025 11:54:30] "[33mGET /lookup/116.96.47.227 HTTP/1.1[0m" 404 -
+127.0.0.1 - - [21/Jun/2025 11:54:32] "[33mGET /lookup HTTP/1.1[0m" 404 -
+127.0.0.1 - - [21/Jun/2025 11:54:39] "[33mGET /lookup HTTP/1.1[0m" 404 -
+127.0.0.1 - - [21/Jun/2025 11:54:39] "[33mGET /lookup HTTP/1.1[0m" 404 -
+127.0.0.1 - - [21/Jun/2025 11:54:40] "[33mGET /lookup HTTP/1.1[0m" 404 -
+127.0.0.1 - - [21/Jun/2025 11:54:41] "[33mGET /lookup HTTP/1.1[0m" 404 -
  * Detected change in '/Users/nbtrong/Documents/選択項目から作成したフォルダ/geoip/app.py', reloading
 Testing IP lookup...
 {'city': 'Hanoi', 'country': 'Vietnam', 'latitude': 21.0184, 'longitude': 105.8461}
-Lookup took: 0.39 ms
-[2025-06-21T04:28:39.335232] Downloading latest GeoLite2 database...
+Lookup took: 0.44 ms
+[2025-06-21T04:54:18.606529] Downloading latest GeoLite2 database...
 Started GeoLite2 auto-update thread.
 
 Starting Flask API server...
-[2025-06-21T04:28:51.988455] Database updated successfully.
+[2025-06-21T04:57:13.275055] Database updated successfully.
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 314-045-702
+ * Detected change in '/Users/nbtrong/Documents/選択項目から作成したフォルダ/geoip/app.py', reloading
+Testing IP lookup...
+{'city': 'Hanoi', 'country': 'Vietnam', 'latitude': 21.0184, 'longitude': 105.8461}
+Lookup took: 0.53 ms
+[2025-06-21T05:07:33.955635] Downloading latest GeoLite2 database...
+Started GeoLite2 auto-update thread.
+
+Starting Flask API server...
+[2025-06-21T05:08:29.390871] Database updated successfully.
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 314-045-702

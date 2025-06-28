@@ -86,6 +86,45 @@ def lookup_ip():
             "client_ip": get_client_ip()
         }), 500
 
+@app.route('/lookup_ip')
+def lookup_ip_parameter():
+    """Lookup IP address information for a specific IP provided as parameter"""
+    try:
+        start_time = time.time()
+        
+        # Get IP from query parameter
+        ip = request.args.get('ip')
+        if not ip:
+            return jsonify({
+                "success": False,
+                "error": "IP parameter is required. Usage: /lookup_ip?ip=x.x.x.x"
+            }), 400
+        
+        result = local_ip_lookup(ip)
+        end_time = time.time()
+        
+        result["lookup_time_ms"] = round((end_time - start_time) * 1000, 2)
+        result["queried_ip"] = ip
+        
+        return jsonify({
+            "success": True,
+            "result": result
+        })
+    
+    except geoip2.errors.AddressNotFoundError:
+        return jsonify({
+            "success": False,
+            "error": "IP address not found in database",
+            "ip": ip
+        }), 404
+    
+    except Exception as e:
+        return jsonify({
+            "success": False,
+            "error": str(e),
+            "ip": ip
+        }), 500
+
 # ---------------------------
 # Database update utilities
 # ---------------------------
